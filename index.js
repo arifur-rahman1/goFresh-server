@@ -31,6 +31,7 @@ async function run() {
 
 
     const productsCollection=client.db("goFresh").collection("products");
+    const ordersCollection=client.db("goFresh").collection("orders");
 
     app.get('/products',async(req,res)=>{
       const cursor=productsCollection.find();
@@ -41,6 +42,12 @@ async function run() {
       const id =req.params.id;
       const query = {_id: new ObjectId(id)}
       const result= await productsCollection.findOne(query);
+      res.send(result)
+    })
+    app.post('/orders',async(req,res)=>{
+      const order=req.body
+      // console.log(order);
+      const result= await ordersCollection.insertOne(order);
       res.send(result)
     })
 
