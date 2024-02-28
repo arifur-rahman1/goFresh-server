@@ -44,11 +44,28 @@ async function run() {
       const result= await productsCollection.findOne(query);
       res.send(result)
     })
+    // orders 
+    app.get('/orders',async(req,res)=>{
+      // console.log(req.query.email);
+      let query={}
+      if(req.query?.email){
+        query= {email : req.query.email}
+      }
+      const result= await ordersCollection.find(query).toArray()
+      res.send(result);
+    })
     app.post('/orders',async(req,res)=>{
       const order=req.body
       // console.log(order);
       const result= await ordersCollection.insertOne(order);
       res.send(result)
+    })
+    // delete orders
+    app.delete('/orders/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={_id: new ObjectId(id)};
+      const result =await ordersCollection.deleteOne(query);
+      res.send(result);
     })
 
     // Connect the client to the server	(optional starting in v4.7)
